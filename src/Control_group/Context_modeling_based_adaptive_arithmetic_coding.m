@@ -18,9 +18,11 @@ for name = file_names
     assert(correct);
     code_len = length(code) + ceil(log2(length(seq)));
     rate = code_len / length(seq);
-    assert(correct,'decode incorrectly\nfile name %s\n',file_name);
-    fprintf('decoding correctness %d\n',correct);
-    fprintf('length of the code %d\nlength of the seqence %d\nratio %f\n',code_len,length(seq),rate);
+    assert(correct,'Decode incorrectly\nfile path %s\n', file_name);
+    fprintf('Decoding correctness %d\n', correct);
+    fprintf('Length of the code %d\n', code_len);
+    fprintf('Length of the seqence %d\n', length(seq));
+    fprintf('Compression ratio %f\n', rate);
 end
 function code = arithmetic_encoding(seq, num_condition,never_occur,minimum)
     accum = ones(num_condition,128);
