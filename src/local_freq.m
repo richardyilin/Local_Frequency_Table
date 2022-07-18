@@ -34,7 +34,6 @@ function code = arithmetic_encoding(seq, num_condition,upperbound,never_occur,mi
     S=[zeros(num_condition,1),cumsum(prob')']; 
     for i = 1 : length(seq)
         index = seq(1,i) + 1;
-        fprintf('i: %d\n',i);
         if i ~= 1
             if (seq(1,i-1) >= 65 && seq(1,i-1) <= 90) || (seq(1,i-1) >= 97 && seq(1,i-1) <= 122)
                 if (seq(1,i-1) ~=  65 && seq(1,i-1) ~=  69 && seq(1,i-1) ~=  73 && seq(1,i-1) ~= 79  && seq(1,i-1) ~= 85  && seq(1,i-1) ~= 97  && seq(1,i-1) ~= 101  && seq(1,i-1) ~= 105  && seq(1,i-1) ~=  111 && seq(1,i-1) ~= 117) % consonant
@@ -498,7 +497,6 @@ function seq = arithmetic_decoding(N, code, num_condition,upperbound,never_occur
     i = 0;
     condition = 3;
     while(i < N)
-        fprintf('current_code_length %d lower %f upper %f\n',i,lower,upper);
         bit = code(1,bit_index);
         bit_index = bit_index + 1;
         if bit == '1'
