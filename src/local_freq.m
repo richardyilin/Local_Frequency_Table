@@ -1,7 +1,7 @@
 close all;
 clc;
 clear;
-file_names = ["argue" "gray" "habit" "money" "normal" "wealth" "where"];
+file_names = ["argue" "habit" "money" "normal" "wealth" "where"];
 num_condition = 6;
 upperbound = mpower(2,31);  
 minimum = mpower(10,-5);

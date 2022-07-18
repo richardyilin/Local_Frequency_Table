@@ -5,7 +5,8 @@ num_condition = 6;
 never_occur = [0,1,2,3,4,5,6,7,8,9,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,127];
 minimum = mpower(10,-5);
 
-file_names = ["argue" "gray" "habit" "money" "normal" "wealth" "where"];
+
+file_names = ["argue" "habit" "money" "normal" "wealth" "where"];
 for name = file_names
     file_name = strcat('../../Test_patterns/',name,'.txt');
     fileID = fopen(file_name,'r');

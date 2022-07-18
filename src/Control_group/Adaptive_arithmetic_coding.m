@@ -5,7 +5,8 @@ symbol = '';
 for i = 1 : 128
     symbol(1,i) = char(i-1);
 end
-file_names = ["argue" "gray" "habit" "money" "normal" "wealth" "where"];
+
+file_names = ["argue" "habit" "money" "normal" "wealth" "where"];
 for name = file_names
     file_name = strcat('../../Test_patterns/',name,'.txt');
     fileID = fopen(file_name,'r');
