@@ -32,13 +32,13 @@ function code = arithmetic_encoding(symbol, seq)
     upper = 1;
     code = '';
     for i = 1 : length(seq)
-        S=zeros(1,length(symbol)+1);
+        prefix_sum = zeros(1,length(symbol)+1);
         for j=2:length(symbol)+1
-            S(1,j)=S(1,j-1)+prob(1,j-1);
+            prefix_sum(1,j)=prefix_sum(1,j-1)+prob(1,j-1);
         end
         index = find(seq(i) == symbol);
-        lower_new = lower + (upper - lower) * S(index);
-        upper_new = lower + (upper - lower) * S(index+1);
+        lower_new = lower + (upper - lower) * prefix_sum(index);
+        upper_new = lower + (upper - lower) * prefix_sum(index+1);
         lower = lower_new;
         upper = upper_new;
         while((upper <= 0.5 && lower <= 0.5) || (lower >= 0.5 && upper >= 0.5))
@@ -79,9 +79,9 @@ function string = arithmetic_decoding(symbol, N, code)
     upper = 1;
     lower1 = 0;
     upper1 = 1;
-    S=zeros(1,length(symbol)+1);
+    prefix_sum=zeros(1,length(symbol)+1);
     for j=2:length(symbol)+1
-        S(1,j)=S(1,j-1)+prob(1,j-1);
+        prefix_sum(1,j)=prefix_sum(1,j-1)+prob(1,j-1);
     end
     bit_index = 1;
     current_code_length = 0;
@@ -97,8 +97,8 @@ function string = arithmetic_decoding(symbol, N, code)
         while(in_range)
             in_range = false;
             for index = 1 : length(symbol)
-                lower2 = lower + (upper - lower) * S(1,index);
-                upper2 = lower + (upper - lower) * S(1,index+1); 
+                lower2 = lower + (upper - lower) * prefix_sum(1,index);
+                upper2 = lower + (upper - lower) * prefix_sum(1,index+1); 
                 if(lower2 <= lower1 && upper2 >= upper1)
                     in_range = true;
                     string = [string,symbol(1,index)];
@@ -112,7 +112,7 @@ function string = arithmetic_decoding(symbol, N, code)
                     end    
                     prob = accum / total;
                     for j=2:length(symbol)+1
-                        S(1,j)=S(1,j-1)+prob(1,j-1);
+                        prefix_sum(1,j)=prefix_sum(1,j-1)+prob(1,j-1);
                     end
                     current_code_length = current_code_length + 1;
                     while((upper <= 0.5 && lower <= 0.5) || (lower >= 0.5 && upper >= 0.5))

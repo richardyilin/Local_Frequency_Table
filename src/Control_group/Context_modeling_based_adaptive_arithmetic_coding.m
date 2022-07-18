@@ -34,7 +34,7 @@ function code = arithmetic_encoding(seq, num_condition,never_occur,minimum)
     lower = 0;
     upper = 1;
     code = '';
-    S=[zeros(num_condition,1),cumsum(prob')'];
+    prefix_sum = [zeros(num_condition,1),cumsum(prob')'];
     for i = 1 : length(seq)
         index = seq(1,i) + 1;
         if i ~= 1
@@ -59,8 +59,8 @@ function code = arithmetic_encoding(seq, num_condition,never_occur,minimum)
         else 
             condition = 3;
         end
-        lower_new = lower + (upper - lower) * S(condition,index);
-        upper_new = lower + (upper - lower) * S(condition,index+1);
+        lower_new = lower + (upper - lower) * prefix_sum(condition,index);
+        upper_new = lower + (upper - lower) * prefix_sum(condition,index+1);
         lower = lower_new;
         upper = upper_new;
         while((upper <= 0.5 && lower <= 0.5) || (lower >= 0.5 && upper >= 0.5))
@@ -81,7 +81,7 @@ function code = arithmetic_encoding(seq, num_condition,never_occur,minimum)
             total(condition) = sum(accum(condition,:));
         end             
         prob(condition,:) = accum(condition,:) / total(condition,1); 
-        S=[zeros(num_condition,1),cumsum(prob')'];
+        prefix_sum=[zeros(num_condition,1),cumsum(prob')'];
     end
     b = 2;
     while(1)
@@ -105,7 +105,7 @@ function string = arithmetic_decoding(N, code, num_condition,never_occur,minimum
     upper = 1;
     lower1 = 0;
     upper1 = 1;
-    S=[zeros(num_condition,1),cumsum(prob')'];
+    prefix_sum=[zeros(num_condition,1),cumsum(prob')'];
     bit_index = 1;
     current_code_length = 0;
     condition = 3;
@@ -121,8 +121,8 @@ function string = arithmetic_decoding(N, code, num_condition,never_occur,minimum
         while(in_range)
             in_range = false;
             for index = 1 : 128
-                lower2 = lower + (upper - lower) * S(condition,index);
-                upper2 = lower + (upper - lower) * S(condition,index+1);
+                lower2 = lower + (upper - lower) * prefix_sum(condition,index);
+                upper2 = lower + (upper - lower) * prefix_sum(condition,index+1);
                 if(lower2 <= lower1 && upper2 >= upper1)
                     in_range = true;
                     string(1,current_code_length+1) = char(index-1);                    
@@ -135,7 +135,7 @@ function string = arithmetic_decoding(N, code, num_condition,never_occur,minimum
                         total(condition,1) = sum(accum(condition,:));
                     end                     
                     prob(condition,:) = accum(condition,:) / total(condition,1);
-                    S=[zeros(num_condition,1),cumsum(prob')'];
+                    prefix_sum=[zeros(num_condition,1),cumsum(prob')'];
                     current_code_length = current_code_length + 1;
                     prev_index = index - 1; % ascii
                     if (prev_index >= 65 && prev_index <= 90) || (prev_index >= 97 && prev_index <= 122)

@@ -32,11 +32,11 @@ function code = arithmetic_encoding(seq, prob)
     lower = 0;
     upper = 1;
     code = '';
-    S=[0,cumsum(prob')'];
+    prefix_sum=[0,cumsum(prob')'];
     for i = 1 : length(seq)
         index = seq(1,i) + 1;        
-        lower_new = lower + (upper - lower) * S(1,index);
-        upper_new = lower + (upper - lower) * S(1,index+1);
+        lower_new = lower + (upper - lower) * prefix_sum(1,index);
+        upper_new = lower + (upper - lower) * prefix_sum(1,index+1);
         lower = lower_new;
         upper = upper_new;
         while((upper <= 0.5 && lower <= 0.5) || (lower >= 0.5 && upper >= 0.5))
@@ -67,7 +67,7 @@ function string = arithmetic_decoding(N, code, prob)
     upper = 1;
     lower1 = 0;
     upper1 = 1;
-    S=[0,cumsum(prob')'];
+    prefix_sum=[0,cumsum(prob')'];
     bit_index = 1;
     current_code_length = 0;
     while(current_code_length < N)
@@ -82,8 +82,8 @@ function string = arithmetic_decoding(N, code, prob)
         while(in_range)
             in_range = false;
             for index = 1 : length(prob)
-                lower2 = lower + (upper - lower) * S(1,index);
-                upper2 = lower + (upper - lower) * S(1,index+1);
+                lower2 = lower + (upper - lower) * prefix_sum(1,index);
+                upper2 = lower + (upper - lower) * prefix_sum(1,index+1);
                 if(lower2 <= lower1 && upper2 >= upper1)
                     in_range = true;
                     string(1,current_code_length+1) = char(index-1);                    

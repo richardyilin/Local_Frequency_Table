@@ -33,7 +33,7 @@ function code = arithmetic_encoding(seq, num_condition,upperbound,never_occur,mi
     lower = 0;
     upper = 1;
     code = '';
-    prefix_sum=[zeros(num_condition,1),cumsum(prob')']; 
+    S=[zeros(num_condition,1),cumsum(prob')']; 
     for i = 1 : length(seq)
         index = seq(1,i) + 1;
         if i ~= 1
@@ -58,8 +58,8 @@ function code = arithmetic_encoding(seq, num_condition,upperbound,never_occur,mi
         else 
             condition = 3;
         end
-        lower_new = lower + (upper - lower) * prefix_sum(condition,index);
-        upper_new = lower + (upper - lower) * prefix_sum(condition,index+1);
+        lower_new = lower + (upper - lower) * S(condition,index);
+        upper_new = lower + (upper - lower) * S(condition,index+1);
         lower = lower_new;
         upper = upper_new;
 
@@ -82,7 +82,7 @@ function code = arithmetic_encoding(seq, num_condition,upperbound,never_occur,mi
             total(condition) = sum(accum(condition,:));
         end      
         prob(condition,:) = accum(condition,:) / total(condition,1); 
-        prefix_sum = local_frequency_table(i, seq, num_condition, prob);
+        S = local_frequency_table(i, seq, num_condition, prob);
     end
     b = 2;
     while(1)
@@ -106,7 +106,7 @@ function seq = arithmetic_decoding(N, code, num_condition,upperbound,never_occur
     upper = 1;
     lower1 = 0;
     upper1 = 1;
-    prefix_sum=[zeros(num_condition,1),cumsum(prob')'];
+    S=[zeros(num_condition,1),cumsum(prob')'];
     bit_index = 1;
     i = 0;
     condition = 3;
@@ -121,7 +121,7 @@ function seq = arithmetic_decoding(N, code, num_condition,upperbound,never_occur
         in_range = true;
         while(in_range)
             in_range = false;
-            array = lower + (upper - lower) * prefix_sum(condition,:);
+            array = lower + (upper - lower) * S(condition,:);
             index = find(array >= upper1, 1) - 1;
             if(array(1,index) <= lower1)
                 in_range = true;
@@ -137,7 +137,7 @@ function seq = arithmetic_decoding(N, code, num_condition,upperbound,never_occur
                 end             
                 prob(condition,:) = accum(condition,:) / total(condition,1);
                 i = i + 1;             
-                prefix_sum = local_frequency_table(i, seq, num_condition, prob);
+                S = local_frequency_table(i, seq, num_condition, prob);
                 prev_index = index - 1; % ascii
                 if (prev_index >= 65 && prev_index <= 90) || (prev_index >= 97 && prev_index <= 122)
                     if (prev_index ~=  65 && prev_index ~=  69 && prev_index ~=  73 && prev_index ~= 79  && prev_index ~= 85  && prev_index ~= 97  && prev_index ~= 101  && prev_index ~= 105  && prev_index ~=  111 && prev_index ~= 117) % consonant
@@ -178,7 +178,7 @@ function seq = arithmetic_decoding(N, code, num_condition,upperbound,never_occur
     end
 end
 
-function prefix_sum = local_frequency_table(i, seq, num_condition, local_prob)
+function S = local_frequency_table(i, seq, num_condition, local_prob)
     switch seq(1,i) % 31
         % below until ze is alphabet followed by space
         case 13
@@ -565,5 +565,5 @@ function prefix_sum = local_frequency_table(i, seq, num_condition, local_prob)
     end
 
     local_prob = local_prob ./ sum(local_prob,2);
-    prefix_sum = [zeros(num_condition,1),cumsum(local_prob')'];
+    prefix_sum=[zeros(num_condition,1),cumsum(local_prob')'];
 end
