@@ -1,4 +1,4 @@
-# Local_Frequency_Table
+# Local Frequency Table for Context-based Adaptive Arithmetic Coding in Text Compression
 ## Overview
   This repository is about the paper "Local Frequency Table for Context-based Adaptive Arithmetic
 Coding in Text Compression". This paper applies two techniques, which are the context-based frequency table and the local frequency table, to improve the compression ratio of adaptive arithmetic coding by 16.8% on average in text compression.
