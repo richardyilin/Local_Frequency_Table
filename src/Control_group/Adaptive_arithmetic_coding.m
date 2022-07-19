@@ -6,7 +6,7 @@ for i = 1 : 128
     symbol(1,i) = char(i-1);
 end
 
-file_names = ["argue" "habit" "money" "normal" "wealth" "where"];
+file_names = ["Thank_you_for_Arguing" "The_7_Habits_of_Highly_Effective_People" "What_Money_Cant_Buy" "Normal_People" "Wealth_Poverty_and_Politics" "Where_the_Crawdads_Sing"];
 for name = file_names
     file_name = strcat('../../Test_patterns/',name,'.txt');
     fileID = fopen(file_name,'r');
@@ -19,10 +19,11 @@ for name = file_names
     code_len = length(code) + ceil(log2(length(seq)));
     rate = code_len / length(seq);
     assert(correct,'Decode incorrectly\nfile path %s\n', file_name);
+    fprintf('File path: %s\n', file_name);
     fprintf('Decoding correctness %d\n', correct);
     fprintf('Length of the code %d\n', code_len);
     fprintf('Length of the seqence %d\n', length(seq));
-    fprintf('Compression ratio %f\n', rate);
+    fprintf('Compression ratio %f\n\n', rate);
 end
 function code = arithmetic_encoding(symbol, seq)
     accum = ones(1,length(symbol));

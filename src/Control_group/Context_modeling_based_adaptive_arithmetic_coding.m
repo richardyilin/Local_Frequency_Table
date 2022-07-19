@@ -5,8 +5,7 @@ num_condition = 6;
 never_occur = [0,1,2,3,4,5,6,7,8,9,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,127];
 minimum = mpower(10,-5);
 
-
-file_names = ["argue" "habit" "money" "normal" "wealth" "where"];
+file_names = ["Thank_you_for_Arguing" "The_7_Habits_of_Highly_Effective_People" "What_Money_Cant_Buy" "Normal_People" "Wealth_Poverty_and_Politics" "Where_the_Crawdads_Sing"];
 for name = file_names
     file_name = strcat('../../Test_patterns/',name,'.txt');
     fileID = fopen(file_name,'r');
@@ -19,10 +18,11 @@ for name = file_names
     code_len = length(code) + ceil(log2(length(seq)));
     rate = code_len / length(seq);
     assert(correct,'Decode incorrectly\nfile path %s\n', file_name);
+    fprintf('File path: %s\n', file_name);
     fprintf('Decoding correctness %d\n', correct);
     fprintf('Length of the code %d\n', code_len);
     fprintf('Length of the seqence %d\n', length(seq));
-    fprintf('Compression ratio %f\n', rate);
+    fprintf('Compression ratio %f\n\n', rate);
 end
 function code = arithmetic_encoding(seq, num_condition,never_occur,minimum)
     accum = ones(num_condition,128);
